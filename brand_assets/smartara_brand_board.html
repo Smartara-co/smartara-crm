@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smartara — Brand Identity System v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink:    #07080F;
+  --white:  #F9F8F5;
+  --or:     #FF5C2E;
+  --teal:   #00C9A7;
+  --blue:   #1D4ED8;
+  --navy:   #0D1526;
+  --mid:    #182036;
+  --gray:   #7C7E91;
+  --light:  #EEECE8;
+  --border: #E3E1DC;
+  --warm:   #FFF9F6;
+}
+
+body {
+  background: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.page { max-width: 960px; margin: 0 auto; padding: 64px 44px 96px; }
+
+/* ── DOC HEADER ── */
+.doc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 32px; margin-bottom: 64px;
+  border-bottom: 2px solid var(--ink);
+}
+.dh-left {}
+.dh-brand { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px; }
+.dh-brand span { color: var(--or); }
+.dh-sub { font-size: 11px; color: var(--gray); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; }
+.dh-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.dh-badge { background: var(--or); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; }
+.dh-meta { font-size: 11px; color: var(--gray); letter-spacing: 0.08em; }
+
+/* ── SECTION ── */
+.sec { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gray); font-weight: 700; margin-bottom: 26px; display: flex; align-items: center; gap: 14px; }
+.sec::before { content: ''; width: 20px; height: 2px; background: var(--or); border-radius: 2px; flex-shrink: 0; }
+.sec::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-wrap { margin-bottom: 56px; }
+
+/* ══ 01 PRIMARY LOGO ══ */
+.logo-stage {
+  background: var(--navy);
+  border-radius: 28px; padding: 84px 52px 60px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 44px;
+  position: relative; overflow: hidden;
+  margin-bottom: 14px;
+}
+.logo-stage::before { content: ''; position: absolute; width: 580px; height: 580px; border-radius: 50%; background: radial-gradient(circle, rgba(255,92,46,0.1) 0%, transparent 62%); top: -210px; right: -190px; }
+.logo-stage::after { content: ''; position: absolute; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(0,201,167,0.08) 0%, transparent 65%); bottom: -90px; left: 50px; }
+.logo-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px); background-size: 44px 44px; }
+
+.primary-lockup { display: flex; align-items: center; gap: 24px; position: relative; z-index: 2; }
+.s-mark { width: 84px; height: 84px; flex-shrink: 0; }
+.wordmark-block { display: flex; flex-direction: column; gap: 6px; }
+.wordmark { font-family: 'Bricolage Grotesque', sans-serif; font-size: 72px; font-weight: 800; line-height: 1; color: #fff; letter-spacing: -0.04em; }
+.wordmark .o { color: var(--or); }
+.descriptor { font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255,255,255,0.26); font-weight: 400; }
+.tagline-pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 16px; font-style: italic; padding: 10px 28px; border-radius: 100px; position: relative; z-index: 2; letter-spacing: 0.01em; }
+.tagline-pill b { color: var(--or); font-style: normal; font-weight: 600; }
+.domain-tag { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.14em; text-transform: uppercase; position: relative; z-index: 2; }
+
+/* ══ VARIANTS ══ */
+.variants { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 56px; }
+.vc { border-radius: 20px; padding: 36px 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; border: 1px solid var(--border); }
+.vc.dk { background: var(--ink); border-color: transparent; }
+.vc.lt { background: var(--light); }
+.vc.ac { background: var(--or); border-color: transparent; }
+.vc-lbl { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gray); font-weight: 600; }
+.vc.dk .vc-lbl { color: rgba(255,255,255,0.2); }
+.vc.ac .vc-lbl { color: rgba(255,255,255,0.5); }
+.mini-l { display: flex; align-items: center; gap: 10px; }
+.mini-w { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+.mini-w.dk { color: #fff; } .mini-w.dk .o { color: var(--or); }
+.mini-w.lt { color: var(--ink); } .mini-w.lt .o { color: var(--blue); }
+.mini-w.ac { color: #fff; }
+
+/* ══ ICON MARK ══ */
+.icons { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 56px; }
+.ic { border-radius: 16px; padding: 28px 14px; display: flex; flex-direction: column; align-items: center; gap: 12px; border: 1px solid var(--border); }
+.ic.n { background: var(--navy); border-color: transparent; }
+.ic.b { background: var(--ink); border-color: transparent; }
+.ic.o { background: var(--or); border-color: transparent; }
+.ic.t { background: var(--teal); border-color: transparent; }
+.ic.w { background: #fff; }
+.ic-l { font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+.ic.n .ic-l, .ic.b .ic-l, .ic.o .ic-l, .ic.t .ic-l { color: rgba(255,255,255,0.32); }
+
+/* ══ COLORS ══ */
+.cols { display: flex; gap: 12px; }
+.col { flex: 1; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.col-sw { height: 100px; }
+.col-info { padding: 13px 15px; background: #fff; border-top: 1px solid rgba(0,0,0,0.05); }
+.col-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 12px; font-weight: 800; color: var(--ink); }
+.col-hex { font-size: 10px; color: var(--gray); font-family: 'Courier New', monospace; letter-spacing: 0.04em; margin-top: 1px; }
+.col-role { font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+
+/* ══ TYPOGRAPHY ══ */
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tc { border: 1px solid var(--border); border-radius: 20px; padding: 32px; overflow: hidden; }
+.tc-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 18px; }
+.tc-disp { font-family: 'Bricolage Grotesque', sans-serif; font-size: 50px; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -0.04em; }
+.tc-disp .h { color: var(--or); }
+.tc-body { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+.tc-scale { display: flex; flex-direction: column; gap: 9px; }
+.tc-row { display: flex; align-items: baseline; gap: 14px; }
+.tc-sz { font-size: 9px; color: var(--gray); width: 32px; font-family: monospace; flex-shrink: 0; }
+.tc-s { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; color: var(--ink); }
+
+/* ══ FOUNDERS ══ */
+.founders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fc { border-radius: 24px; padding: 36px; position: relative; overflow: hidden; }
+.fc.mj { background: var(--navy); }
+.fc.rj { background: var(--warm); border: 1px solid var(--border); }
+.fc.mj::before { content: ''; position: absolute; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(255,92,46,0.14) 0%, transparent 65%); top: -70px; right: -60px; }
+.fc.rj::after { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(29,78,216,0.07) 0%, transparent 70%); bottom: -40px; right: -40px; }
+.f-top { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; position: relative; z-index: 1; }
+.f-av { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 19px; color: #fff; flex-shrink: 0; }
+.f-av.m { background: linear-gradient(135deg, var(--or), #D94419); }
+.f-av.r { background: linear-gradient(135deg, var(--blue), #1337A0); }
+.f-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; }
+.fc.mj .f-name { color: #fff; }
+.fc.rj .f-name { color: var(--ink); }
+.f-role { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-top: 3px; }
+.fc.mj .f-role { color: var(--or); }
+.fc.rj .f-role { color: var(--blue); }
+.f-bio { font-size: 13.5px; line-height: 1.65; margin-bottom: 20px; position: relative; z-index: 1; }
+.fc.mj .f-bio { color: rgba(255,255,255,0.45); }
+.fc.rj .f-bio { color: var(--gray); }
+.f-tags { display: flex; flex-wrap: wrap; gap: 7px; position: relative; z-index: 1; }
+.ft { font-size: 10px; padding: 4px 12px; border-radius: 100px; font-weight: 600; }
+.ft-or { background: rgba(255,92,46,0.14); color: var(--or); }
+.ft-bl { background: rgba(29,78,216,0.1); color: var(--blue); }
+.ft-tl { background: rgba(0,201,167,0.12); color: #00A589; }
+
+.f-combined { grid-column: 1/-1; background: linear-gradient(135deg, var(--navy) 0%, var(--mid) 100%); border-radius: 18px; padding: 28px 36px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.05); }
+.fc-l { display: flex; align-items: center; gap: 18px; }
+.av-pair { display: flex; }
+.av-s { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 13px; color: #fff; border: 2.5px solid var(--navy); }
+.av-s:last-child { margin-left: -9px; }
+.av-s.m { background: linear-gradient(135deg, var(--or), #D94419); }
+.av-s.r { background: linear-gradient(135deg, var(--blue), #1337A0); }
+.fc-txt .fc-lbl { font-size: 10px; color: rgba(255,255,255,0.28); letter-spacing: 0.1em; text-transform: uppercase; }
+.fc-txt .fc-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.01em; margin-top: 2px; }
+.fc-txt .fc-name span { color: var(--or); }
+.fc-r { font-size: 12px; color: rgba(255,255,255,0.28); font-style: italic; }
+.fc-r em { color: var(--teal); font-style: normal; font-weight: 500; }
+
+/* ══ BRAND IN USE ══ */
+.use-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.biz { background: var(--ink); border-radius: 20px; padding: 34px; min-height: 194px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.biz::after { content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(255,92,46,0.1) 0%, transparent 70%); right: -55px; bottom: -55px; }
+.biz-top { display: flex; align-items: center; gap: 11px; position: relative; z-index: 1; }
+.biz-logo { font-family: 'Bricolage Grotesque', sans-serif; font-size: 23px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.biz-logo .o { color: var(--or); }
+.biz-bot { position: relative; z-index: 1; }
+.biz-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 14px; font-weight: 700; color: #fff; }
+.biz-role { font-size: 10px; color: var(--or); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.biz-info { font-size: 10px; color: rgba(255,255,255,0.28); margin-top: 9px; line-height: 1.9; }
+
+.sig { background: var(--light); border-radius: 20px; padding: 28px; border: 1px solid var(--border); }
+.sig-bar { display: flex; align-items: center; gap: 15px; padding-bottom: 16px; margin-bottom: 14px; border-bottom: 3px solid var(--or); }
+.sig-icon { width: 44px; height: 44px; background: var(--ink); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sig-nm { font-family: 'Bricolage Grotesque', sans-serif; font-size: 15px; font-weight: 800; color: var(--ink); }
+.sig-rl { font-size: 10px; color: var(--gray); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 2px; }
+.sig-det { font-size: 11px; color: var(--gray); line-height: 2; }
+.sig-det a { color: var(--blue); text-decoration: none; font-weight: 600; }
+.sig-tl { font-size: 9px; color: var(--gray); letter-spacing: 0.16em; text-transform: uppercase; margin-top: 12px; font-style: italic; }
+
+/* ══ TAGLINE BANNER ══ */
+.banner { background: var(--ink); border-radius: 28px; padding: 56px 54px; display: flex; align-items: center; justify-content: space-between; gap: 36px; position: relative; overflow: hidden; }
+.banner::before { content: ''; position: absolute; width: 480px; height: 480px; border-radius: 50%; background: radial-gradient(circle, rgba(255,92,46,0.1) 0%, transparent 65%); top: -130px; right: -90px; }
+.banner::after { content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(0,201,167,0.07) 0%, transparent 65%); bottom: -80px; left: 80px; }
+.banner-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 40px 40px; }
+.b-left { position: relative; z-index: 1; }
+.b-eye { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 14px; }
+.b-head { font-family: 'Bricolage Grotesque', sans-serif; font-size: 48px; font-weight: 800; color: #fff; letter-spacing: -0.035em; line-height: 1.06; }
+.b-head span { color: var(--or); }
+.b-sub { font-size: 13px; color: rgba(255,255,255,0.28); margin-top: 14px; letter-spacing: 0.05em; }
+.b-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; position: relative; z-index: 1; flex-shrink: 0; }
+.b-badge { background: var(--or); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 17px; padding: 16px 32px; border-radius: 14px; white-space: nowrap; letter-spacing: 0.01em; }
+.b-domain { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.35); font-size: 12px; letter-spacing: 0.12em; padding: 9px 20px; border-radius: 100px; white-space: nowrap; }
+
+@media(max-width:640px) {
+  .variants, .type-grid, .founders-grid, .use-grid { grid-template-columns: 1fr; }
+  .icons { grid-template-columns: repeat(3,1fr); }
+  .cols { flex-wrap: wrap; }
+  .col { flex: 0 0 calc(50% - 6px); }
+  .banner { flex-direction: column; align-items: flex-start; }
+  .wordmark { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- DOC HEADER -->
+<div class="doc-header">
+  <div class="dh-left">
+    <div class="dh-brand">
+      <svg width="28" height="28" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#182036"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#00C9A7"/></svg>
+      Smart<span>ara</span>
+    </div>
+    <div class="dh-sub">Brand Identity System · AI · Data · Engineering</div>
+  </div>
+  <div class="dh-right">
+    <div class="dh-badge">v2.0 Final</div>
+    <div class="dh-meta">2026 · smartara.co</div>
+  </div>
+</div>
+
+<!-- 01 PRIMARY LOGO -->
+<div class="sec-wrap">
+  <div class="sec">01 — Primary Logo</div>
+  <div class="logo-stage">
+    <div class="logo-grid"></div>
+    <div class="primary-lockup">
+      <svg class="s-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" rx="20" fill="#182036"/>
+        <path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/>
+        <circle cx="22" cy="30" r="5" fill="#FF5C2E"/>
+        <circle cx="58" cy="46" r="5" fill="#00C9A7"/>
+        <circle cx="40" cy="38" r="3.5" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+      <div class="wordmark-block">
+        <div class="wordmark">Smart<span class="o">ara</span></div>
+        <div class="descriptor">AI · Data · Engineering</div>
+      </div>
+    </div>
+    <div class="tagline-pill">From idea to <b>impact.</b></div>
+    <div class="domain-tag">smartara.co</div>
+  </div>
+</div>
+
+<!-- 02 LOGO VARIANTS -->
+<div class="sec-wrap">
+  <div class="sec">02 — Logo Variants</div>
+  <div class="variants">
+    <div class="vc dk">
+      <div class="mini-l">
+        <svg width="30" height="30" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#182036"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#00C9A7"/></svg>
+        <span class="mini-w dk">Smart<span class="o">ara</span></span>
+      </div>
+      <div class="vc-lbl">On Dark</div>
+    </div>
+    <div class="vc lt">
+      <div class="mini-l">
+        <svg width="30" height="30" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#07080F"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#1D4ED8"/></svg>
+        <span class="mini-w lt">Smart<span class="o">ara</span></span>
+      </div>
+      <div class="vc-lbl">On Light</div>
+    </div>
+    <div class="vc ac">
+      <div class="mini-l">
+        <svg width="30" height="30" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="rgba(0,0,0,0.18)"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="white"/><circle cx="58" cy="46" r="5" fill="white"/></svg>
+        <span class="mini-w ac">Smartara</span>
+      </div>
+      <div class="vc-lbl">On Accent</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 ICON MARK -->
+<div class="sec-wrap">
+  <div class="sec">03 — Icon Mark Colorways</div>
+  <div class="icons">
+    <div class="ic n"><svg width="44" height="44" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#182036"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#00C9A7"/><circle cx="40" cy="38" r="3.5" fill="rgba(255,255,255,0.25)"/></svg><div class="ic-l">Navy</div></div>
+    <div class="ic b"><svg width="44" height="44" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#07080F"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#00C9A7"/></svg><div class="ic-l">Black</div></div>
+    <div class="ic o"><svg width="44" height="44" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="rgba(0,0,0,0.15)"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="white"/><circle cx="58" cy="46" r="5" fill="white"/></svg><div class="ic-l">Orange</div></div>
+    <div class="ic t"><svg width="44" height="44" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="rgba(0,0,0,0.12)"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="white"/><circle cx="58" cy="46" r="5" fill="white"/></svg><div class="ic-l">Teal</div></div>
+    <div class="ic w"><svg width="44" height="44" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#F0EEE9"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="#07080F" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#1D4ED8"/></svg><div class="ic-l">Light</div></div>
+  </div>
+</div>
+
+<!-- 04 COLOR SYSTEM -->
+<div class="sec-wrap">
+  <div class="sec">04 — Color System</div>
+  <div class="cols">
+    <div class="col"><div class="col-sw" style="background:#07080F;"></div><div class="col-info"><div class="col-name">Void</div><div class="col-hex">#07080F</div><div class="col-role">Primary Ink</div></div></div>
+    <div class="col"><div class="col-sw" style="background:#FF5C2E;"></div><div class="col-info"><div class="col-name">Smart Orange</div><div class="col-hex">#FF5C2E</div><div class="col-role">Brand Accent</div></div></div>
+    <div class="col"><div class="col-sw" style="background:#00C9A7;"></div><div class="col-info"><div class="col-name">Data Teal</div><div class="col-hex">#00C9A7</div><div class="col-role">Secondary</div></div></div>
+    <div class="col"><div class="col-sw" style="background:#1D4ED8;"></div><div class="col-info"><div class="col-name">Signal Blue</div><div class="col-hex">#1D4ED8</div><div class="col-role">Tertiary</div></div></div>
+    <div class="col"><div class="col-sw" style="background:#0D1526;"></div><div class="col-info"><div class="col-name">Deep Navy</div><div class="col-hex">#0D1526</div><div class="col-role">Dark Surface</div></div></div>
+    <div class="col"><div class="col-sw" style="background:#F9F8F5;border-bottom:1px solid #e3e1dc;"></div><div class="col-info"><div class="col-name">Parchment</div><div class="col-hex">#F9F8F5</div><div class="col-role">Background</div></div></div>
+  </div>
+</div>
+
+<!-- 05 TYPOGRAPHY -->
+<div class="sec-wrap">
+  <div class="sec">05 — Typography</div>
+  <div class="type-grid">
+    <div class="tc">
+      <div class="tc-tag">Display — Bricolage Grotesque 800</div>
+      <div class="tc-disp">Smart.<br><span class="h">Real.</span><br>Now.</div>
+    </div>
+    <div class="tc">
+      <div class="tc-tag">Body — DM Sans 400 / 500</div>
+      <div class="tc-body">We turn your ideas into smart solutions — AI, data, and software that actually moves your business forward.</div>
+      <div class="tc-scale">
+        <div class="tc-row"><span class="tc-sz">64px</span><span class="tc-s" style="font-size:27px;letter-spacing:-0.03em;">Display Hero</span></div>
+        <div class="tc-row"><span class="tc-sz">40px</span><span class="tc-s" style="font-size:21px;letter-spacing:-0.02em;">Heading 1</span></div>
+        <div class="tc-row"><span class="tc-sz">28px</span><span class="tc-s" style="font-size:16px;">Heading 2</span></div>
+        <div class="tc-row"><span class="tc-sz">18px</span><span class="tc-s" style="font-size:13px;">Heading 3</span></div>
+        <div class="tc-row"><span class="tc-sz">14px</span><span class="tc-s" style="font-size:11px;font-family:'DM Sans',sans-serif;font-weight:400;color:#7C7E91;">Body — DM Sans Regular</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 CO-FOUNDERS -->
+<div class="sec-wrap">
+  <div class="sec">06 — Co-Founders</div>
+  <div class="founders-grid">
+    <div class="fc mj">
+      <div class="f-top">
+        <div class="f-av m">MJ</div>
+        <div><div class="f-name">Muhammed John</div><div class="f-role">Co-Founder · AI & Data</div></div>
+      </div>
+      <div class="f-bio">Builds AI systems, data pipelines, and intelligent automation. Turns raw data into business decisions that actually matter.</div>
+      <div class="f-tags">
+        <span class="ft ft-or">AI/ML Engineering</span>
+        <span class="ft ft-tl">Data Pipelines</span>
+        <span class="ft ft-or">LLM & Agents</span>
+        <span class="ft ft-tl">Power BI</span>
+        <span class="ft ft-or">Databricks</span>
+      </div>
+    </div>
+    <div class="fc rj">
+      <div class="f-top">
+        <div class="f-av r">RJ</div>
+        <div><div class="f-name">Rohey John</div><div class="f-role">Co-Founder · Software & Web</div></div>
+      </div>
+      <div class="f-bio">Builds robust web applications, APIs, and backend systems. Ensures every product is fast, secure, and beautifully engineered.</div>
+      <div class="f-tags">
+        <span class="ft ft-bl">C# / .NET Core</span>
+        <span class="ft ft-bl">WebAPI / MVC</span>
+        <span class="ft ft-bl">Laravel / PHP</span>
+        <span class="ft ft-bl">Tailwind CSS</span>
+      </div>
+    </div>
+    <div class="f-combined">
+      <div class="fc-l">
+        <div class="av-pair"><div class="av-s m">MJ</div><div class="av-s r">RJ</div></div>
+        <div class="fc-txt">
+          <div class="fc-lbl">Founded by</div>
+          <div class="fc-name">The John <span>Family</span></div>
+        </div>
+      </div>
+      <div class="fc-r">Morocco & The Gambia · <em>Working Worldwide</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- 07 BRAND IN USE -->
+<div class="sec-wrap">
+  <div class="sec">07 — Brand In Use</div>
+  <div class="use-grid">
+    <div class="biz">
+      <div class="biz-top">
+        <svg width="30" height="30" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#182036"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#00C9A7"/></svg>
+        <div class="biz-logo">Smart<span class="o">ara</span></div>
+      </div>
+      <div class="biz-bot">
+        <div class="biz-name">Muhammed & Rohey John</div>
+        <div class="biz-role">Co-Founders</div>
+        <div class="biz-info">hello@smartara.co<br>smartara.co</div>
+      </div>
+    </div>
+    <div class="sig">
+      <div class="sig-bar">
+        <div class="sig-icon">
+          <svg width="24" height="24" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="18" fill="#182036"/><path d="M22 30C22 25.6 25.6 22 30 22H50C54.4 22 58 25.6 58 30C58 34.4 54.4 38 50 38H30C25.6 38 22 41.6 22 46C22 50.4 25.6 54 30 54H50C54.4 54 58 50.4 58 46" stroke="white" stroke-width="5.5" stroke-linecap="round"/><circle cx="22" cy="30" r="5" fill="#FF5C2E"/><circle cx="58" cy="46" r="5" fill="#00C9A7"/></svg>
+        </div>
+        <div><div class="sig-nm">Muhammed John</div><div class="sig-rl">Co-Founder · Smartara</div></div>
+      </div>
+      <div class="sig-det">
+        ✉️ hello@smartara.co<br>
+        🌐 <a href="#">smartara.co</a><br>
+        💼 <a href="#">linkedin.com/in/Maha-Jr</a>
+      </div>
+      <div class="sig-tl">AI · Data Engineering · Smart Solutions</div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 OFFICIAL TAGLINE -->
+<div class="sec">08 — Official Tagline</div>
+<div class="banner">
+  <div class="banner-grid"></div>
+  <div class="b-left">
+    <div class="b-eye">Smartara · Official Brand Tagline · 2026</div>
+    <div class="b-head">From idea<br>to <span>impact.</span></div>
+    <div class="b-sub">hello@smartara.co · smartara.co</div>
+  </div>
+  <div class="b-right">
+    <div class="b-badge">Smartara™</div>
+    <div class="b-domain">smartara.co</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
