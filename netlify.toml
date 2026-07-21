@@ -1,0 +1,6 @@
+[build.environment]
+# NEXT_PUBLIC_* vars are meant to ship in the browser bundle per Next.js
+# convention — Netlify's secret scanner otherwise false-positives on them
+# and fails the build. Supabase's security comes from Row Level Security,
+# not from hiding the anon key.
+SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY"
