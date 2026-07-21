@@ -43,7 +43,7 @@ export default function LoginPage() {
               Smart<span style={{ color: "var(--color-orange)" }}>ara</span>
             </span>
           </div>
-          <p className="text-sm" style={{ color: "var(--color-ink-faint)" }}>
+          <p className="text-sm" style={{ color: "var(--color-on-dark-faint)" }}>
             Get More Customers. Save More Time.
           </p>
         </div>
@@ -54,11 +54,14 @@ export default function LoginPage() {
           style={{ background: "var(--color-surface)" }}
         >
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--color-ink-muted)" }}>
+            <label htmlFor="email" className="block text-xs font-medium mb-1.5" style={{ color: "var(--color-ink-muted)" }}>
               Email
             </label>
             <input
+              id="email"
+              name="email"
               type="email"
+              autoComplete="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -68,11 +71,14 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--color-ink-muted)" }}>
+            <label htmlFor="password" className="block text-xs font-medium mb-1.5" style={{ color: "var(--color-ink-muted)" }}>
               Password
             </label>
             <input
+              id="password"
+              name="password"
               type="password"
+              autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -83,7 +89,7 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <p className="text-xs rounded-lg px-3 py-2" style={{ background: "var(--color-red-soft)", color: "var(--color-red)" }}>
+            <p className="text-xs rounded-lg px-3 py-2" style={{ background: "var(--color-red-soft)", color: "var(--color-red-strong)" }}>
               {error}
             </p>
           )}
@@ -98,7 +104,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-xs mt-6" style={{ color: "var(--color-ink-faint)" }}>
+        <p className="text-center text-xs mt-6" style={{ color: "var(--color-on-dark-faint)" }}>
           Internal tool — accounts are added by an admin in Supabase, no
           public signup.
         </p>

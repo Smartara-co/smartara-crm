@@ -1,5 +1,5 @@
-export type Region = "gambia" | "international";
-export type Currency = "GMD" | "USD";
+export type Region = "gambia" | "morocco" | "international";
+export type Currency = "GMD" | "MAD" | "USD";
 export type Product =
   | "Blueprint"
   | "Prospect"
@@ -106,6 +106,14 @@ export const LEAD_STAGES: { key: LeadStage; label: string }[] = [
   { key: "lost", label: "Lost" },
 ];
 
+export const REGIONS: { key: Region; label: string; flag: string }[] = [
+  { key: "gambia", label: "Gambia", flag: "🇬🇲" },
+  { key: "morocco", label: "Morocco", flag: "🇲🇦" },
+  { key: "international", label: "International", flag: "🌍" },
+];
+
+export const CURRENCIES: Currency[] = ["GMD", "MAD", "USD"];
+
 export const LEAD_SOURCES: LeadSource[] = [
   "WhatsApp Referral",
   "LinkedIn",
@@ -141,13 +149,14 @@ export const PROJECT_STATUSES: { key: ProjectStatus; label: string }[] = [
 
 export const TEAM_MEMBERS: TeamMember[] = ["Muhammed", "Rohey"];
 
+const CURRENCY_SUFFIX: Record<Currency, string> = { GMD: "D", MAD: "DH", USD: "" };
+
 export function formatMoney(amount: number, currency: Currency): string {
-  const symbol = currency === "USD" ? "$" : "D";
   const formatted = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
-  return currency === "USD" ? `${symbol}${formatted}` : `${formatted} ${symbol}`;
+  return currency === "USD" ? `$${formatted}` : `${formatted} ${CURRENCY_SUFFIX[currency]}`;
 }
 
 export function timeAgo(dateStr: string): string {

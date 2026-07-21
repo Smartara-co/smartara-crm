@@ -21,7 +21,7 @@ function Logo() {
         <div className="font-display text-sm font-bold text-white leading-tight">
           Smart<span style={{ color: "var(--color-orange)" }}>ara</span>
         </div>
-        <div className="text-[10px] leading-tight" style={{ color: "var(--color-ink-faint)" }}>
+        <div className="text-[10px] leading-tight" style={{ color: "var(--color-on-dark-faint)" }}>
           CRM
         </div>
       </div>
@@ -46,7 +46,7 @@ export function Sidebar({ userEmail }: { userEmail?: string }) {
           onClick={() => setOpen(true)}
           aria-label="Open menu"
           className="p-2 -mr-2"
-          style={{ color: "#c4cad6" }}
+          style={{ color: "var(--color-on-dark-faint)" }}
         >
           <Menu size={20} />
         </button>
@@ -74,7 +74,7 @@ export function Sidebar({ userEmail }: { userEmail?: string }) {
             onClick={() => setOpen(false)}
             aria-label="Close menu"
             className="md:hidden p-1"
-            style={{ color: "#c4cad6" }}
+            style={{ color: "var(--color-on-dark-faint)" }}
           >
             <X size={18} />
           </button>
@@ -93,7 +93,7 @@ export function Sidebar({ userEmail }: { userEmail?: string }) {
                 className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors"
                 style={{
                   background: active ? "rgba(255,92,46,0.15)" : "transparent",
-                  color: active ? "var(--color-orange)" : "#c4cad6",
+                  color: active ? "var(--color-orange)" : "var(--color-on-dark-faint)",
                 }}
               >
                 <Icon size={16} strokeWidth={2} />
@@ -105,7 +105,7 @@ export function Sidebar({ userEmail }: { userEmail?: string }) {
 
         <div className="pt-4 mt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
           {userEmail && (
-            <div className="px-3 mb-2 text-xs truncate" style={{ color: "var(--color-ink-faint)" }}>
+            <div className="px-3 mb-2 text-xs truncate" style={{ color: "var(--color-on-dark-faint)" }}>
               {userEmail}
             </div>
           )}
@@ -113,7 +113,7 @@ export function Sidebar({ userEmail }: { userEmail?: string }) {
             <button
               type="submit"
               className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors"
-              style={{ color: "#c4cad6" }}
+              style={{ color: "var(--color-on-dark-faint)" }}
             >
               <LogOut size={16} strokeWidth={2} />
               Sign out

@@ -11,7 +11,7 @@ export default async function LeadsPage() {
         <div>
           <h1 className="font-display text-2xl font-semibold">Pipeline</h1>
           <p className="text-sm mt-1" style={{ color: "var(--color-ink-muted)" }}>
-            {leads.length} lead{leads.length === 1 ? "" : "s"} across Gambia and international outreach.
+            {leads.length} lead{leads.length === 1 ? "" : "s"} across Gambia, Morocco, and international outreach.
           </p>
         </div>
         <NewLeadButton />

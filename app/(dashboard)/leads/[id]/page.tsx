@@ -67,7 +67,7 @@ export default async function LeadDetailPage({
           {lead.phone && <InfoRow label="Phone">{lead.phone}</InfoRow>}
           {lead.lost_reason && (
             <InfoRow label="Lost reason">
-              <span style={{ color: "var(--color-red)" }}>{lead.lost_reason}</span>
+              <span style={{ color: "var(--color-red-strong)" }}>{lead.lost_reason}</span>
             </InfoRow>
           )}
           {lead.notes && (

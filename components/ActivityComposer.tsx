@@ -27,8 +27,12 @@ export function ActivityComposer({
   function submit() {
     if (!content.trim()) return;
     startTransition(async () => {
-      await onAdd(content.trim(), type, actor);
-      setContent("");
+      try {
+        await onAdd(content.trim(), type, actor);
+        setContent("");
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't log activity. Please try again.");
+      }
     });
   }
 
@@ -39,10 +43,11 @@ export function ActivityComposer({
           <button
             key={t.key}
             onClick={() => setType(t.key)}
+            aria-pressed={type === t.key}
             className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium"
             style={{
               background: type === t.key ? "var(--color-orange-soft)" : "transparent",
-              color: type === t.key ? "var(--color-orange)" : "var(--color-ink-muted)",
+              color: type === t.key ? "var(--color-orange-strong)" : "var(--color-ink-muted)",
             }}
           >
             {t.icon}
@@ -51,6 +56,7 @@ export function ActivityComposer({
         ))}
       </div>
       <textarea
+        aria-label="Activity note"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         rows={2}
@@ -60,6 +66,7 @@ export function ActivityComposer({
       />
       <div className="flex items-center justify-between">
         <select
+          aria-label="Logged by"
           value={actor}
           onChange={(e) => setActor(e.target.value as TeamMember)}
           className="rounded-md border px-2 py-1 text-xs bg-white"

@@ -17,28 +17,41 @@ export function LeadActions({ lead }: { lead: Lead }) {
       reason = window.prompt("Why was this lead lost? (optional)") ?? undefined;
     }
     startTransition(async () => {
-      await updateLeadStage(lead.id, stage, lead.assigned_to, reason);
+      try {
+        await updateLeadStage(lead.id, stage, lead.assigned_to, reason);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't update stage. Please try again.");
+      }
     });
   }
 
   function convert() {
     startTransition(async () => {
-      const client = await convertLeadToClient(lead.id);
-      if (client) router.push(`/clients/${client.id}`);
+      try {
+        const client = await convertLeadToClient(lead.id);
+        if (client) router.push(`/clients/${client.id}`);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't convert lead. Please try again.");
+      }
     });
   }
 
   function remove() {
     if (!window.confirm(`Delete lead "${lead.name}"? This can't be undone.`)) return;
     startTransition(async () => {
-      await deleteLead(lead.id);
-      router.push("/leads");
+      try {
+        await deleteLead(lead.id);
+        router.push("/leads");
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't delete lead. Please try again.");
+      }
     });
   }
 
   return (
     <div className="flex items-center gap-2">
       <select
+        aria-label="Lead stage"
         value={lead.stage}
         disabled={isPending}
         onChange={(e) => changeStage(e.target.value as LeadStage)}
@@ -57,7 +70,7 @@ export function LeadActions({ lead }: { lead: Lead }) {
           onClick={convert}
           disabled={isPending}
           className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium"
-          style={{ background: "var(--color-teal-soft)", color: "var(--color-teal)" }}
+          style={{ background: "var(--color-teal-soft)", color: "var(--color-teal-strong)" }}
         >
           <CheckCircle2 size={14} /> Convert to client
         </button>
@@ -66,6 +79,7 @@ export function LeadActions({ lead }: { lead: Lead }) {
       <button
         onClick={remove}
         disabled={isPending}
+        aria-label="Delete lead"
         className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium"
         style={{ color: "var(--color-red)" }}
       >

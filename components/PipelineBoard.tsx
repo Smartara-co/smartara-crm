@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import type { Lead, LeadStage } from "@/lib/data/types";
-import { LEAD_STAGES, formatMoney } from "@/lib/data/types";
+import { LEAD_STAGES, formatMoney, CURRENCIES } from "@/lib/data/types";
 import { SignalMeter } from "@/components/SignalMeter";
 import { RegionBadge } from "@/components/Badges";
 import { updateLeadStage, convertLeadToClient } from "@/app/actions/leads";
@@ -26,8 +26,13 @@ export function PipelineBoard({ leads }: { leads: Lead[] }) {
     const next = order[Math.min(idx + 1, order.length - 1)];
     setPendingId(lead.id);
     startTransition(async () => {
-      await updateLeadStage(lead.id, next, lead.assigned_to);
-      setPendingId(null);
+      try {
+        await updateLeadStage(lead.id, next, lead.assigned_to);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't advance lead. Please try again.");
+      } finally {
+        setPendingId(null);
+      }
     });
   }
 
@@ -35,16 +40,26 @@ export function PipelineBoard({ leads }: { leads: Lead[] }) {
     const reason = window.prompt("Why was this lead lost? (optional)") ?? undefined;
     setPendingId(lead.id);
     startTransition(async () => {
-      await updateLeadStage(lead.id, "lost", lead.assigned_to, reason);
-      setPendingId(null);
+      try {
+        await updateLeadStage(lead.id, "lost", lead.assigned_to, reason);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't update lead. Please try again.");
+      } finally {
+        setPendingId(null);
+      }
     });
   }
 
   function convert(lead: Lead) {
     setPendingId(lead.id);
     startTransition(async () => {
-      await convertLeadToClient(lead.id);
-      setPendingId(null);
+      try {
+        await convertLeadToClient(lead.id);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't convert lead. Please try again.");
+      } finally {
+        setPendingId(null);
+      }
     });
   }
 
@@ -57,9 +72,9 @@ export function PipelineBoard({ leads }: { leads: Lead[] }) {
             <div className="flex items-center justify-between mb-2.5 px-1">
               <div className="flex items-center gap-2">
                 <SignalMeter stage={stage.key} size="sm" />
-                <h3 className="text-xs font-semibold" style={{ color: "var(--color-ink-muted)" }}>
+                <h2 className="text-xs font-semibold" style={{ color: "var(--color-ink-muted)" }}>
                   {stage.label}
-                </h3>
+                </h2>
               </div>
               <span className="text-xs font-mono" style={{ color: "var(--color-ink-faint)" }}>
                 {stageLeads.length}
@@ -109,7 +124,7 @@ export function PipelineBoard({ leads }: { leads: Lead[] }) {
                           onClick={() => markLost(lead)}
                           disabled={busy}
                           className="rounded-md px-2 py-1 text-xs font-medium"
-                          style={{ background: "var(--color-red-soft)", color: "var(--color-red)" }}
+                          style={{ background: "var(--color-red-soft)", color: "var(--color-red-strong)" }}
                         >
                           Lost
                         </button>
@@ -121,7 +136,7 @@ export function PipelineBoard({ leads }: { leads: Lead[] }) {
                         onClick={() => convert(lead)}
                         disabled={busy}
                         className="w-full flex items-center justify-center gap-1 rounded-md py-1 text-xs font-medium mt-1"
-                        style={{ background: "var(--color-teal-soft)", color: "var(--color-teal)" }}
+                        style={{ background: "var(--color-teal-soft)", color: "var(--color-teal-strong)" }}
                       >
                         <CheckCircle2 size={12} /> Convert to client
                       </button>
@@ -142,17 +157,14 @@ export function PipelineBoard({ leads }: { leads: Lead[] }) {
 
             {stageLeads.length > 0 && (
               <div className="mt-2 px-1 text-xs font-mono" style={{ color: "var(--color-ink-faint)" }}>
-                {stageLeads.some((l) => l.currency === "GMD") &&
-                  formatMoney(
-                    stageLeads.filter((l) => l.currency === "GMD").reduce((s, l) => s + Number(l.estimated_value), 0),
-                    "GMD"
-                  )}
-                {stageLeads.some((l) => l.currency === "GMD") && stageLeads.some((l) => l.currency === "USD") && " · "}
-                {stageLeads.some((l) => l.currency === "USD") &&
-                  formatMoney(
-                    stageLeads.filter((l) => l.currency === "USD").reduce((s, l) => s + Number(l.estimated_value), 0),
-                    "USD"
-                  )}
+                {CURRENCIES.filter((c) => stageLeads.some((l) => l.currency === c))
+                  .map((c) =>
+                    formatMoney(
+                      stageLeads.filter((l) => l.currency === c).reduce((s, l) => s + Number(l.estimated_value), 0),
+                      c
+                    )
+                  )
+                  .join(" · ")}
               </div>
             )}
           </div>

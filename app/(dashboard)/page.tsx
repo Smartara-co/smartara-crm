@@ -16,6 +16,9 @@ export default async function DashboardPage() {
   const openGmd = openLeads
     .filter((l) => l.currency === "GMD")
     .reduce((sum, l) => sum + Number(l.estimated_value), 0);
+  const openMad = openLeads
+    .filter((l) => l.currency === "MAD")
+    .reduce((sum, l) => sum + Number(l.estimated_value), 0);
   const openUsd = openLeads
     .filter((l) => l.currency === "USD")
     .reduce((sum, l) => sum + Number(l.estimated_value), 0);
@@ -54,12 +57,18 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
         <StatCard
           icon={<CircleDollarSign size={16} />}
           label="Open pipeline · GMD"
           value={formatMoney(openGmd, "GMD")}
           accent="orange"
+        />
+        <StatCard
+          icon={<CircleDollarSign size={16} />}
+          label="Open pipeline · MAD"
+          value={formatMoney(openMad, "MAD")}
+          accent="amber"
         />
         <StatCard
           icon={<CircleDollarSign size={16} />}
@@ -89,7 +98,7 @@ export default async function DashboardPage() {
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-sm font-semibold">Pipeline by stage</h2>
-            <Link href="/leads" className="text-xs font-medium" style={{ color: "var(--color-orange)" }}>
+            <Link href="/leads" className="text-xs font-medium" style={{ color: "var(--color-orange-strong)" }}>
               View pipeline →
             </Link>
           </div>
@@ -165,13 +174,14 @@ function StatCard({
   icon: React.ReactNode;
   label: string;
   value: string;
-  accent: "orange" | "blue" | "teal" | "navy";
+  accent: "orange" | "blue" | "teal" | "navy" | "amber";
 }) {
   const colors: Record<string, string> = {
     orange: "var(--color-orange)",
     blue: "var(--color-blue)",
     teal: "var(--color-teal)",
     navy: "var(--color-navy)",
+    amber: "var(--color-amber-strong)",
   };
   return (
     <div

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
-import { LEAD_SOURCES, PRODUCTS } from "@/lib/data/types";
+import { LEAD_SOURCES, PRODUCTS, REGIONS, CURRENCIES } from "@/lib/data/types";
 
 export async function POST(request: Request) {
   const secret = request.headers.get("x-webhook-secret");
@@ -29,8 +29,12 @@ export async function POST(request: Request) {
     (PRODUCTS as readonly string[]).includes(body.product_interest)
       ? body.product_interest
       : "Client Services";
-  const region = body.region === "international" ? "international" : "gambia";
-  const currency = body.currency === "USD" ? "USD" : "GMD";
+  const regionKeys = REGIONS.map((r) => r.key) as readonly string[];
+  const region = typeof body.region === "string" && regionKeys.includes(body.region) ? body.region : "gambia";
+  const currency =
+    typeof body.currency === "string" && (CURRENCIES as readonly string[]).includes(body.currency)
+      ? body.currency
+      : "GMD";
   const estimatedValue = Number(body.estimated_value) || 0;
 
   const payload = {

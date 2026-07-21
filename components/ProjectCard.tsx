@@ -12,14 +12,22 @@ export function ProjectCard({ project }: { project: Project }) {
 
   function changeStatus(status: ProjectStatus) {
     startTransition(async () => {
-      await updateProjectStatus(project.id, project.client_id, status);
+      try {
+        await updateProjectStatus(project.id, project.client_id, status);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't update status. Please try again.");
+      }
     });
   }
 
   function remove() {
     if (!window.confirm(`Delete project "${project.name}"?`)) return;
     startTransition(async () => {
-      await deleteProject(project.id, project.client_id);
+      try {
+        await deleteProject(project.id, project.client_id);
+      } catch (err) {
+        window.alert(err instanceof Error ? err.message : "Couldn't delete project. Please try again.");
+      }
     });
   }
 
@@ -58,6 +66,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
       <div className="flex items-center justify-between pt-2" style={{ borderTop: "1px solid var(--color-line)" }}>
         <select
+          aria-label="Project status"
           value={project.status}
           disabled={isPending}
           onChange={(e) => changeStatus(e.target.value as ProjectStatus)}
