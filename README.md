@@ -84,6 +84,11 @@ directly in this CRM.
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY` and `LEADS_WEBHOOK_SECRET` (only needed if
      you set up website lead capture in step 3)
+   - `SECRETS_SCAN_OMIT_KEYS` = `NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY`
+     — Netlify's build-time secret scanner otherwise fails the build on
+     these. That's a false positive: `NEXT_PUBLIC_*` vars are meant to ship
+     in the browser bundle by Next.js convention; Supabase's security comes
+     from Row Level Security, not from hiding the anon key.
 4. Deploy. That's it — same zero-cost pattern as MinistryFlow (Next.js +
    Supabase + Netlify, free tiers all around).
 5. Under **Domain management**, add `crm.smartara.co` as a custom domain and
