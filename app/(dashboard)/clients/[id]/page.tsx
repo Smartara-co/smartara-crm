@@ -11,10 +11,13 @@ import { ArrowLeft, Briefcase } from "@/components/icons";
 
 export default async function ClientDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ projectSort?: string }>;
 }) {
   const { id } = await params;
+  const { projectSort } = await searchParams;
   const client = await getClient(id);
   if (!client) notFound();
 
@@ -22,6 +25,16 @@ export default async function ClientDetailPage({
     getProjectsForClient(id),
     getActivities("client", id),
   ]);
+
+  const sortByLatest = projectSort === "latest";
+  const sortedProjects = sortByLatest
+    ? [...projects].sort((a, b) => {
+        if (!a.deadline && !b.deadline) return 0;
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+        return new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
+      })
+    : projects;
 
   return (
     <div className="px-4 py-5 md:px-8 md:py-7 max-w-4xl">
@@ -86,7 +99,35 @@ export default async function ClientDetailPage({
           >
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-display text-sm font-semibold">Projects</h2>
-              <NewProjectButton clientId={client.id} />
+              <div className="flex items-center gap-3">
+                {projects.length > 1 && (
+                  <div className="flex items-center rounded-lg border p-0.5 text-xs" style={{ borderColor: "var(--color-line)" }}>
+                    <Link
+                      href={`/clients/${client.id}`}
+                      className="rounded-md px-2 py-1 font-medium"
+                      style={
+                        sortByLatest
+                          ? { color: "var(--color-ink-muted)" }
+                          : { background: "var(--color-bg)", color: "var(--color-ink)" }
+                      }
+                    >
+                      Recent
+                    </Link>
+                    <Link
+                      href={`/clients/${client.id}?projectSort=latest`}
+                      className="rounded-md px-2 py-1 font-medium"
+                      style={
+                        sortByLatest
+                          ? { background: "var(--color-bg)", color: "var(--color-ink)" }
+                          : { color: "var(--color-ink-muted)" }
+                      }
+                    >
+                      Latest
+                    </Link>
+                  </div>
+                )}
+                <NewProjectButton clientId={client.id} />
+              </div>
             </div>
 
             {projects.length === 0 ? (
@@ -101,7 +142,7 @@ export default async function ClientDetailPage({
               </div>
             ) : (
               <div className="space-y-2.5">
-                {projects.map((p) => (
+                {sortedProjects.map((p) => (
                   <ProjectCard key={p.id} project={p} />
                 ))}
               </div>
