@@ -2,7 +2,9 @@ import Link from "next/link";
 import { getClients, getAllProjects } from "@/lib/data/queries";
 import { RegionBadge, ClientStatusBadge } from "@/components/Badges";
 import { NewClientButton } from "@/components/NewClientButton";
+import { ClientFilters } from "@/components/ClientFilters";
 import { Building2, ChevronUp, ChevronDown } from "@/components/icons";
+import type { Region, ClientStatus } from "@/lib/data/types";
 
 type SortKey = "name" | "region" | "status" | "projects" | "date" | "latest";
 type SortDir = "asc" | "desc";
@@ -12,19 +14,27 @@ const SORT_KEYS: SortKey[] = ["name", "region", "status", "projects", "date", "l
 export default async function ClientsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sort?: string; dir?: string }>;
+  searchParams: Promise<{ sort?: string; dir?: string; region?: string; status?: string }>;
 }) {
   const params = await searchParams;
   const sort: SortKey = SORT_KEYS.includes(params.sort as SortKey)
     ? (params.sort as SortKey)
     : "date";
   const dir: SortDir = params.dir === "asc" ? "asc" : "desc";
+  const regionFilter = params.region as Region | undefined;
+  const statusFilter = params.status as ClientStatus | undefined;
 
-  const [clients, projects] = await Promise.all([getClients(), getAllProjects()]);
+  const [allClients, projects] = await Promise.all([getClients(), getAllProjects()]);
+
+  const clients = allClients.filter(
+    (c) => (!regionFilter || c.region === regionFilter) && (!statusFilter || c.status === statusFilter)
+  );
 
   const projectCountByClient = new Map<string, number>();
   const activeProjectCountByClient = new Map<string, number>();
   const latestDeadlineByClient = new Map<string, string>();
+  // A project with no deadline yet is still ongoing, so it counts as more recent than any delivered date.
+  const ongoingProjectByClient = new Set<string>();
   projects.forEach((p) => {
     projectCountByClient.set(p.client_id, (projectCountByClient.get(p.client_id) ?? 0) + 1);
     if (p.status === "in_progress" || p.status === "review") {
@@ -38,6 +48,8 @@ export default async function ClientsPage({
       if (!current || p.deadline > current) {
         latestDeadlineByClient.set(p.client_id, p.deadline);
       }
+    } else {
+      ongoingProjectByClient.add(p.client_id);
     }
   });
 
@@ -60,11 +72,17 @@ export default async function ClientsPage({
         cmp = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         break;
       case "latest": {
-        const aDeadline = latestDeadlineByClient.get(a.id);
-        const bDeadline = latestDeadlineByClient.get(b.id);
-        const aTime = aDeadline ? new Date(aDeadline).getTime() : 0;
-        const bTime = bDeadline ? new Date(bDeadline).getTime() : 0;
-        cmp = aTime - bTime;
+        const aTime = ongoingProjectByClient.has(a.id)
+          ? Infinity
+          : latestDeadlineByClient.has(a.id)
+            ? new Date(latestDeadlineByClient.get(a.id)!).getTime()
+            : -Infinity;
+        const bTime = ongoingProjectByClient.has(b.id)
+          ? Infinity
+          : latestDeadlineByClient.has(b.id)
+            ? new Date(latestDeadlineByClient.get(b.id)!).getTime()
+            : -Infinity;
+        cmp = aTime === bTime ? 0 : aTime - bTime;
         break;
       }
     }
@@ -73,7 +91,12 @@ export default async function ClientsPage({
 
   const sortHref = (key: SortKey) => {
     const nextDir: SortDir = sort === key && dir === "asc" ? "desc" : "asc";
-    return `/clients?sort=${key}&dir=${nextDir}`;
+    const hrefParams = new URLSearchParams();
+    hrefParams.set("sort", key);
+    hrefParams.set("dir", nextDir);
+    if (regionFilter) hrefParams.set("region", regionFilter);
+    if (statusFilter) hrefParams.set("status", statusFilter);
+    return `/clients?${hrefParams.toString()}`;
   };
 
   return (
@@ -82,11 +105,15 @@ export default async function ClientsPage({
         <div>
           <h1 className="font-display text-2xl font-semibold">Clients</h1>
           <p className="text-sm mt-1" style={{ color: "var(--color-ink-muted)" }}>
-            {clients.length} client{clients.length === 1 ? "" : "s"} on the books.
+            {regionFilter || statusFilter
+              ? `${clients.length} of ${allClients.length} clients match your filters.`
+              : `${clients.length} client${clients.length === 1 ? "" : "s"} on the books.`}
           </p>
         </div>
         <NewClientButton />
       </div>
+
+      <ClientFilters />
 
       {clients.length === 0 ? (
         <div
@@ -95,7 +122,9 @@ export default async function ClientsPage({
         >
           <Building2 size={24} className="mx-auto mb-2" style={{ color: "var(--color-ink-faint)" }} />
           <p className="text-sm" style={{ color: "var(--color-ink-muted)" }}>
-            No clients yet — convert a won lead, or add one directly.
+            {allClients.length === 0
+              ? "No clients yet — convert a won lead, or add one directly."
+              : "No clients match your filters."}
           </p>
         </div>
       ) : (
@@ -153,13 +182,17 @@ export default async function ClientsPage({
                     )}
                   </td>
                   <td className="px-4 py-3 text-xs" style={{ color: "var(--color-ink-faint)" }}>
-                    {latestDeadlineByClient.has(c.id)
-                      ? new Date(latestDeadlineByClient.get(c.id)!).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })
-                      : "—"}
+                    {ongoingProjectByClient.has(c.id) ? (
+                      <span style={{ color: "var(--color-blue)" }}>In progress</span>
+                    ) : latestDeadlineByClient.has(c.id) ? (
+                      new Date(latestDeadlineByClient.get(c.id)!).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    ) : (
+                      "—"
+                    )}
                   </td>
                   <td className="px-4 py-3 text-xs" style={{ color: "var(--color-ink-faint)" }}>
                     {new Date(c.created_at).toLocaleDateString("en-US", {
