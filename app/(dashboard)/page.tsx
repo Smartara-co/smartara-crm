@@ -32,16 +32,15 @@ export default async function DashboardPage() {
   ).length;
 
   const deliveredProjects = projects.filter((p) => p.status === "delivered");
-  const closedCurrencies = ["GMD", "MAD", "USD"] as const;
-  const closedValue = closedCurrencies
-    .filter((c) => deliveredProjects.some((p) => p.currency === c))
-    .map((c) =>
-      formatMoney(
-        deliveredProjects.filter((p) => p.currency === c).reduce((sum, p) => sum + Number(p.value), 0),
-        c
-      )
-    )
-    .join(" · ") || formatMoney(0, "GMD");
+  const closedGmd = deliveredProjects
+    .filter((p) => p.currency === "GMD")
+    .reduce((sum, p) => sum + Number(p.value), 0);
+  const closedMad = deliveredProjects
+    .filter((p) => p.currency === "MAD")
+    .reduce((sum, p) => sum + Number(p.value), 0);
+  const closedUsd = deliveredProjects
+    .filter((p) => p.currency === "USD")
+    .reduce((sum, p) => sum + Number(p.value), 0);
 
   const activeClients = clients.filter((c) => c.status === "active").length;
   const activeProjects = projects.filter(
@@ -69,7 +68,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         <StatCard
           icon={<CircleDollarSign size={16} />}
           label="Open pipeline · GMD"
@@ -102,8 +101,20 @@ export default async function DashboardPage() {
         />
         <StatCard
           icon={<CircleDollarSign size={16} />}
-          label="Total closed value"
-          value={closedValue}
+          label="Closed value · GMD"
+          value={formatMoney(closedGmd, "GMD")}
+          accent="success"
+        />
+        <StatCard
+          icon={<CircleDollarSign size={16} />}
+          label="Closed value · MAD"
+          value={formatMoney(closedMad, "MAD")}
+          accent="success"
+        />
+        <StatCard
+          icon={<CircleDollarSign size={16} />}
+          label="Closed value · USD"
+          value={formatMoney(closedUsd, "USD")}
           accent="success"
         />
       </div>
