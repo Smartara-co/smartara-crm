@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Lead, LeadStage } from "@/lib/data/types";
 import { LEAD_STAGES } from "@/lib/data/types";
 import { updateLeadStage, convertLeadToClient, deleteLead } from "@/app/actions/leads";
+import { EditLeadButton } from "@/components/EditLeadButton";
 import { CheckCircle2, Trash2 } from "lucide-react";
 
 export function LeadActions({ lead }: { lead: Lead }) {
@@ -64,6 +65,8 @@ export function LeadActions({ lead }: { lead: Lead }) {
           </option>
         ))}
       </select>
+
+      <EditLeadButton lead={lead} />
 
       {lead.stage === "won" && (
         <button

@@ -31,6 +31,18 @@ export default async function DashboardPage() {
       new Date(l.updated_at).getFullYear() === thisMonth.getFullYear()
   ).length;
 
+  const wonLeads = leads.filter((l) => l.stage === "won");
+  const closedCurrencies = ["GMD", "MAD", "USD"] as const;
+  const closedValue = closedCurrencies
+    .filter((c) => wonLeads.some((l) => l.currency === c))
+    .map((c) =>
+      formatMoney(
+        wonLeads.filter((l) => l.currency === c).reduce((sum, l) => sum + Number(l.estimated_value), 0),
+        c
+      )
+    )
+    .join(" · ") || formatMoney(0, "GMD");
+
   const activeClients = clients.filter((c) => c.status === "active").length;
   const activeProjects = projects.filter(
     (p) => p.status === "in_progress" || p.status === "review"
@@ -57,7 +69,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         <StatCard
           icon={<CircleDollarSign size={16} />}
           label="Open pipeline · GMD"
@@ -87,6 +99,12 @@ export default async function DashboardPage() {
           label="Won this month"
           value={String(wonThisMonth)}
           accent="navy"
+        />
+        <StatCard
+          icon={<CircleDollarSign size={16} />}
+          label="Total closed value"
+          value={closedValue}
+          accent="success"
         />
       </div>
 
@@ -174,7 +192,7 @@ function StatCard({
   icon: React.ReactNode;
   label: string;
   value: string;
-  accent: "orange" | "blue" | "teal" | "navy" | "amber";
+  accent: "orange" | "blue" | "teal" | "navy" | "amber" | "success";
 }) {
   const colors: Record<string, string> = {
     orange: "var(--color-orange)",
@@ -182,6 +200,7 @@ function StatCard({
     teal: "var(--color-teal)",
     navy: "var(--color-navy)",
     amber: "var(--color-amber-strong)",
+    success: "var(--color-teal-strong)",
   };
   return (
     <div
