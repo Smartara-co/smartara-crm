@@ -7,7 +7,7 @@ export function ClientFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  function updateParam(key: "region" | "status", value: string) {
+  function updateParam(key: "region" | "status" | "paid", value: string) {
     const params = new URLSearchParams(searchParams.toString());
     if (value) {
       params.set(key, value);
@@ -49,12 +49,25 @@ export function ClientFilters() {
         ))}
       </select>
 
-      {(searchParams.get("region") || searchParams.get("status")) && (
+      <select
+        aria-label="Filter by paid status"
+        value={searchParams.get("paid") ?? ""}
+        onChange={(e) => updateParam("paid", e.target.value)}
+        className="rounded-lg border px-2.5 py-1.5 text-xs bg-white"
+        style={{ borderColor: "var(--color-line)" }}
+      >
+        <option value="">Paid & founding</option>
+        <option value="paid">Paid clients</option>
+        <option value="founding">Founding (free)</option>
+      </select>
+
+      {(searchParams.get("region") || searchParams.get("status") || searchParams.get("paid")) && (
         <button
           onClick={() => {
             const params = new URLSearchParams(searchParams.toString());
             params.delete("region");
             params.delete("status");
+            params.delete("paid");
             router.push(`/clients?${params.toString()}`);
           }}
           className="text-xs font-medium hover:underline"

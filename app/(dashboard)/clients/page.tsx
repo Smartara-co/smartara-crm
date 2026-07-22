@@ -14,7 +14,7 @@ const SORT_KEYS: SortKey[] = ["name", "region", "status", "projects", "date", "l
 export default async function ClientsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sort?: string; dir?: string; region?: string; status?: string }>;
+  searchParams: Promise<{ sort?: string; dir?: string; region?: string; status?: string; paid?: string }>;
 }) {
   const params = await searchParams;
   const sort: SortKey = SORT_KEYS.includes(params.sort as SortKey)
@@ -23,16 +23,14 @@ export default async function ClientsPage({
   const dir: SortDir = params.dir === "asc" ? "asc" : "desc";
   const regionFilter = params.region as Region | undefined;
   const statusFilter = params.status as ClientStatus | undefined;
+  const paidFilter = params.paid === "paid" || params.paid === "founding" ? params.paid : undefined;
 
   const [allClients, projects] = await Promise.all([getClients(), getAllProjects()]);
-
-  const clients = allClients.filter(
-    (c) => (!regionFilter || c.region === regionFilter) && (!statusFilter || c.status === statusFilter)
-  );
 
   const projectCountByClient = new Map<string, number>();
   const activeProjectCountByClient = new Map<string, number>();
   const latestDeadlineByClient = new Map<string, string>();
+  const totalValueByClient = new Map<string, number>();
   // A project with no deadline yet is still ongoing, so it counts as more recent than any delivered date.
   const ongoingProjectByClient = new Set<string>();
   projects.forEach((p) => {
@@ -51,7 +49,18 @@ export default async function ClientsPage({
     } else {
       ongoingProjectByClient.add(p.client_id);
     }
+    totalValueByClient.set(p.client_id, (totalValueByClient.get(p.client_id) ?? 0) + p.value);
   });
+
+  // A founding client's projects were built for free, i.e. their total project value is 0.
+  const isFounding = (clientId: string) => (totalValueByClient.get(clientId) ?? 0) === 0;
+
+  const clients = allClients.filter(
+    (c) =>
+      (!regionFilter || c.region === regionFilter) &&
+      (!statusFilter || c.status === statusFilter) &&
+      (!paidFilter || (paidFilter === "founding" ? isFounding(c.id) : !isFounding(c.id)))
+  );
 
   const sortedClients = [...clients].sort((a, b) => {
     let cmp = 0;
@@ -96,6 +105,7 @@ export default async function ClientsPage({
     hrefParams.set("dir", nextDir);
     if (regionFilter) hrefParams.set("region", regionFilter);
     if (statusFilter) hrefParams.set("status", statusFilter);
+    if (paidFilter) hrefParams.set("paid", paidFilter);
     return `/clients?${hrefParams.toString()}`;
   };
 
@@ -105,7 +115,7 @@ export default async function ClientsPage({
         <div>
           <h1 className="font-display text-2xl font-semibold">Clients</h1>
           <p className="text-sm mt-1" style={{ color: "var(--color-ink-muted)" }}>
-            {regionFilter || statusFilter
+            {regionFilter || statusFilter || paidFilter
               ? `${clients.length} of ${allClients.length} clients match your filters.`
               : `${clients.length} client${clients.length === 1 ? "" : "s"} on the books.`}
           </p>
@@ -157,9 +167,19 @@ export default async function ClientsPage({
                   className="last:border-0"
                 >
                   <td className="px-4 py-3">
-                    <Link href={`/clients/${c.id}`} className="font-medium hover:underline">
-                      {c.name}
-                    </Link>
+                    <div className="flex items-center gap-1.5">
+                      <Link href={`/clients/${c.id}`} className="font-medium hover:underline">
+                        {c.name}
+                      </Link>
+                      {isFounding(c.id) && (
+                        <span
+                          className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium"
+                          style={{ background: "var(--color-orange-soft)", color: "var(--color-orange-strong)" }}
+                        >
+                          Founding
+                        </span>
+                      )}
+                    </div>
                     {c.company && (
                       <div className="text-xs" style={{ color: "var(--color-ink-faint)" }}>
                         {c.company}
