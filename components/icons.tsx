@@ -9,4 +9,6 @@ export {
   ArrowLeft,
   Briefcase,
   Building2,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
