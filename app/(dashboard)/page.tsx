@@ -31,13 +31,13 @@ export default async function DashboardPage() {
       new Date(l.updated_at).getFullYear() === thisMonth.getFullYear()
   ).length;
 
-  const wonLeads = leads.filter((l) => l.stage === "won");
+  const deliveredProjects = projects.filter((p) => p.status === "delivered");
   const closedCurrencies = ["GMD", "MAD", "USD"] as const;
   const closedValue = closedCurrencies
-    .filter((c) => wonLeads.some((l) => l.currency === c))
+    .filter((c) => deliveredProjects.some((p) => p.currency === c))
     .map((c) =>
       formatMoney(
-        wonLeads.filter((l) => l.currency === c).reduce((sum, l) => sum + Number(l.estimated_value), 0),
+        deliveredProjects.filter((p) => p.currency === c).reduce((sum, p) => sum + Number(p.value), 0),
         c
       )
     )
