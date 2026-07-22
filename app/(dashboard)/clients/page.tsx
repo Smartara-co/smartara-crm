@@ -4,10 +4,10 @@ import { RegionBadge, ClientStatusBadge } from "@/components/Badges";
 import { NewClientButton } from "@/components/NewClientButton";
 import { Building2, ChevronUp, ChevronDown } from "@/components/icons";
 
-type SortKey = "name" | "region" | "status" | "projects" | "date";
+type SortKey = "name" | "region" | "status" | "projects" | "date" | "latest";
 type SortDir = "asc" | "desc";
 
-const SORT_KEYS: SortKey[] = ["name", "region", "status", "projects", "date"];
+const SORT_KEYS: SortKey[] = ["name", "region", "status", "projects", "date", "latest"];
 
 export default async function ClientsPage({
   searchParams,
@@ -24,6 +24,7 @@ export default async function ClientsPage({
 
   const projectCountByClient = new Map<string, number>();
   const activeProjectCountByClient = new Map<string, number>();
+  const latestDeadlineByClient = new Map<string, string>();
   projects.forEach((p) => {
     projectCountByClient.set(p.client_id, (projectCountByClient.get(p.client_id) ?? 0) + 1);
     if (p.status === "in_progress" || p.status === "review") {
@@ -31,6 +32,12 @@ export default async function ClientsPage({
         p.client_id,
         (activeProjectCountByClient.get(p.client_id) ?? 0) + 1
       );
+    }
+    if (p.deadline) {
+      const current = latestDeadlineByClient.get(p.client_id);
+      if (!current || p.deadline > current) {
+        latestDeadlineByClient.set(p.client_id, p.deadline);
+      }
     }
   });
 
@@ -52,6 +59,14 @@ export default async function ClientsPage({
       case "date":
         cmp = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         break;
+      case "latest": {
+        const aDeadline = latestDeadlineByClient.get(a.id);
+        const bDeadline = latestDeadlineByClient.get(b.id);
+        const aTime = aDeadline ? new Date(aDeadline).getTime() : 0;
+        const bTime = bDeadline ? new Date(bDeadline).getTime() : 0;
+        cmp = aTime - bTime;
+        break;
+      }
     }
     return dir === "asc" ? cmp : -cmp;
   });
@@ -101,6 +116,7 @@ export default async function ClientsPage({
                   dir={dir}
                   href={sortHref("projects")}
                 />
+                <SortTh sortKey="latest" label="Latest" activeSort={sort} dir={dir} href={sortHref("latest")} />
                 <SortTh sortKey="date" label="Added" activeSort={sort} dir={dir} href={sortHref("date")} />
               </tr>
             </thead>
@@ -135,6 +151,15 @@ export default async function ClientsPage({
                         · {activeProjectCountByClient.get(c.id)} active
                       </span>
                     )}
+                  </td>
+                  <td className="px-4 py-3 text-xs" style={{ color: "var(--color-ink-faint)" }}>
+                    {latestDeadlineByClient.has(c.id)
+                      ? new Date(latestDeadlineByClient.get(c.id)!).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })
+                      : "—"}
                   </td>
                   <td className="px-4 py-3 text-xs" style={{ color: "var(--color-ink-faint)" }}>
                     {new Date(c.created_at).toLocaleDateString("en-US", {
